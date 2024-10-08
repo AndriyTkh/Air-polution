@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Kyiv Pollution Heatmap</title>
+    <title>Pollution Heatmap</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Leaflet.heat JavaScript -->
     <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
-    <!-- Papa Parse JavaScript for CSV parsing -->
+    <!-- Papa Parse for CSV parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
     <style>
@@ -21,56 +21,74 @@
     </style>
   </head>
   <body>
+    <h2>Select CSV files to load pollution data</h2>
+    <input type="file" id="fileInput" multiple accept=".csv" />
     <div id="map"></div>
-    <input type="file" id="upload" accept=".csv" />
 
     <script>
-      // Initialize the map and set its view to Kyiv
-      var map = L.map("map").setView([50.45, 30.523], 12);
-
-      // Load and display tile layer (for city layout)
+      var map = L.map("map").setView([50.45, 30.523], 12); // Set the map view to Kyiv
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(map);
 
-      // Function to process CSV and update heatmap
-      function processCSVData(results) {
-        // Limit the data to the first 100 rows
-        var data = results.data
-          .slice(0, results.data.length - 10)
-          .map(function (row) {
-            return [
-              parseFloat(row.Latitude),
-              parseFloat(row.Longitude),
-              parseFloat(row.CO / 5),
-            ]; // normalize CO
+      // Handle file input and process the selected CSV files
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", handleFiles);
+
+      function handleFiles(event) {
+        const files = event.target.files;
+
+        if (files.length === 0) {
+          alert("Please select one or more CSV files.");
+          return;
+        }
+
+        let combinedData = [];
+
+        // Process each selected file
+        for (let i = 0; i < files.length; i++) {
+          let file = files[i];
+
+          Papa.parse(file, {
+            header: true, // Assume first row is a header
+            dynamicTyping: true, // Automatically type data
+            complete: function (results) {
+              // Skip the last row if it's null
+              let validData = results.data.slice(0, -1);
+              combinedData = combinedData.concat(validData);
+
+              if (i === files.length - 1) {
+                console.log(combinedData);
+
+                displayHeatmap(combinedData); // When all files are processed, display heatmap
+              }
+            },
+            error: function (error) {
+              console.error("Error parsing file:", error);
+            },
           });
+        }
+      }
 
-        console.log(data);
+      function displayHeatmap(pollutionData) {
+        // Prepare data for heatmap by extracting Latitude, Longitude, and interpolating CO values
+        var heatData = pollutionData.map(function (row) {
+          return [
+            parseFloat(row.Latitude),
+            parseFloat(row.Longitude),
+            parseFloat(row.PM10), // Interpolate CO values with max value divided by 2
+          ];
+        });
 
-        // Create heatmap layer
-        var heat = L.heatLayer(data, {
+        // Add the heat layer with the maximum attribute modified
+        var heat = L.heatLayer(heatData, {
           radius: 25,
           blur: 15,
           maxZoom: 17,
+          max: 200, // Set maximum intensity to 1 (as CO is divided by 2)
         }).addTo(map);
       }
-
-      // Handle file upload and CSV parsing
-      document
-        .getElementById("upload")
-        .addEventListener("change", function (e) {
-          var file = e.target.files[0];
-          if (file) {
-            Papa.parse(file, {
-              header: true,
-              dynamicTyping: true,
-              complete: function (results) {
-                processCSVData(results);
-              },
-            });
-          }
-        });
     </script>
   </body>
 </html>
