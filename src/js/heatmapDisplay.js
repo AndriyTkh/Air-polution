@@ -1,26 +1,24 @@
-import { removeDublicates } from "./filterFun.js";
+import { removeDublicates, ClearMap } from "./filterFun.js";
 
 export function displayHeatmap(pollutionData, map) {
   console.log("Displaying heatmap...");
 
-  console.log(map.layers);
-  if (map != undefined) {
-    map.remove();
-  }
-
-  console.log(pollutionData);
+  ClearMap(map);
 
   var heatData = pollutionData.map(function (row) {
-    return [
-      parseFloat(row.Latitude),
-      parseFloat(row.Longitude),
-      parseFloat(row.CO),
-    ];
+    return {
+      Lat: parseFloat(row.Latitude),
+      Lon: parseFloat(row.Longitude),
+      CO: parseFloat(row.CO),
+      Time: row.Time,
+      Date: row.Date,
+    };
   });
 
-  let cleanData = removeDublicates(heatData);
+  console.log(heatData);
+  
 
-  console.log(cleanData);
+  let cleanData = removeDublicates(heatData);
 
   var heat = L.heatLayer(cleanData, {
     radius: 25,

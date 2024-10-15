@@ -24,6 +24,11 @@
   <body>
     <h2>Select CSV files to load pollution data</h2>
     <input type="file" id="fileInput" multiple accept=".csv" />
+
+    <label for="timeSelector">Select Time:</label>
+    <input type="time" id="timeSelector" step="3600" value="12:00" />
+    <p>Selected Time: <span id="selectedTime">12:00</span></p>
+
     <div id="map"></div>
 
     <script src="./main.js" type="module"></script>
