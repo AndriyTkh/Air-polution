@@ -10,5 +10,7 @@ export function removeDublicates(heatData) {
   }
   cleanData.push(heatData[heatData.length - 1]);
 
-  console.log(cleanData);
+  console.log("Dublicates filtered.");
+
+  return cleanData;
 }
