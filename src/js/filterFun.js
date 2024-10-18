@@ -40,3 +40,9 @@ export function sortByDate(data) {
   console.log("Sorted by date");
   return sortedData;
 }
+
+export const asyncTimeout = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
