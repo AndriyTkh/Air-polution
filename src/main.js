@@ -12,11 +12,11 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 console.log("Map setup... DONE");
 
 const timeSelector = document.getElementById("timeSelector");
-    const selectedTimeDisplay = document.getElementById("selectedTime");
+const selectedTimeDisplay = document.getElementById("selectedTime");
 
-    timeSelector.addEventListener("input", function() {
-        selectedTimeDisplay.textContent = timeSelector.value;
-    });
+timeSelector.addEventListener("input", function () {
+  selectedTimeDisplay.textContent = timeSelector.value;
+});
 
 document
   .getElementById("fileInput")

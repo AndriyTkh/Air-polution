@@ -25,18 +25,20 @@ export function displayHeatmap(pollutionData, map) {
   let dateIndex;
   let timeIndex;
 
-  /* ---------- Interval Logic ------------ */
-  function processNextCycle() {
+  /* ---------- Setting an interval ------------ */
+
+  const intervalId = setInterval(async () => {
     dateIndex = formatDate(dateDT);
     timeIndex = dateDT.getHours();
+
+    console.log(dateIndex);
 
     const timeDisplay = document.getElementById("selectedTime");
     timeDisplay.textContent = `Current date: ${dateIndex}, time: ${formatTime(
       dateDT
     )}`;
 
-    /* ---------- Actual stuff --------- */
-    if (true) {
+    if (pollutionData[dateIndex][timeIndex]) {
       let dataList = pollutionData[dateIndex][timeIndex];
       ClearMap(map);
 
@@ -45,25 +47,18 @@ export function displayHeatmap(pollutionData, map) {
       });
 
       AddHeatMap(dataList, map);
-
-      dateDT = changeHour(dateDT, 1);
-      setTimeout(processNextCycle, 500);
-    } else {
-      console.log(`No data for ${dateIndex}, hour ${timeIndex}, skipping...`);
-      dateDT = changeHour(dateDT, 1);
-
-      // Check for the end of the day
-      if (timeIndex >= 24) {
-        if (dateIndex === "2024-06-02") {
-          return;
-        }
-        dateDT.setHours(0);
-        dateDT = changeDay(dateDT, 1);
-      }
-
-      processNextCycle();
     }
-  }
 
-  processNextCycle();
+    dateDT = changeHour(dateDT, 1);
+
+    /* ------ Checking for end of the day ------ */
+
+    if (timeIndex >= 24) {
+      if (dateDT.time) {
+        clearInterval(intervalId);
+      }
+      dateDT.setHours(0);
+      dateDT = changeDay(dateDT, 1);
+    }
+  }, 500);
 }
