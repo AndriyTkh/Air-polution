@@ -37,8 +37,6 @@ export function sortByDate(data) {
     sortedData[date][hour].push(row);
   });
 
-  console.log(sortedData);
-
   console.log("Sorted by date");
   return sortedData;
 }
