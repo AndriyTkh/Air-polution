@@ -22,6 +22,48 @@ export function removeDublicates(heatData) {
   return cleanData;
 }
 
+export function averageFromDublicates(heatData, tolerance = 0.0001) {
+  const averagedData = [];
+  const matchedIndices = new Set();
+
+  const checkTwoHours = (prevHour, nextHour) => {
+    nextHour.forEach((prevRow) => {
+      let matchFound = false;
+
+      prevHour.forEach((nextRow, index) => {
+        if (
+          Math.abs(prevRow.Latitude - nextRow.Latitude) <= tolerance &&
+          Math.abs(prevRow.Longitude - nextRow.Longitude) <= tolerance
+        ) {
+          const averagedRow = {
+            Latitude: prevRow.Latitude,
+            Longitude: prevRow.Longitude,
+            CO: (prevRow.CO + nextRow.CO) / 2,
+          };
+
+          averagedData.push(averagedRow);
+          matchedIndices.add(index); // Mark this index as matched
+          matchFound = true;
+        }
+      });
+
+      // If no match found for the current point, keep the original point from the previous hour
+      if (!matchFound) {
+        averagedData.push(prevRow);
+      }
+    });
+
+    // Add remaining unmatched points from the current hour to the averagedData
+    currHourData.forEach((currRow, index) => {
+      if (!matchedIndices.has(index)) {
+        averagedData.push(currRow);
+      }
+    });
+
+    return averagedData;
+  };
+}
+
 export function sortByDate(data) {
   const sortedData = [];
 
