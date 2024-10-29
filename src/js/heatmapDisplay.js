@@ -25,6 +25,15 @@ export function displayHeatmap(pollutionData, map) {
   let dateIndex;
   let timeIndex;
 
+  let dataList = pollutionData["2024-06-01"][16];
+  ClearMap(map);
+
+  dataList = dataList.map((row) => {
+    return [row.Latitude, row.Longitude, row.CO];
+  });
+
+  AddHeatMap(dataList, map);
+
   /* ---------- Interval Logic ------------ */
   function processNextCycle() {
     dateIndex = formatDate(dateDT);
@@ -65,5 +74,5 @@ export function displayHeatmap(pollutionData, map) {
     }
   }
 
-  processNextCycle();
+  /* processNextCycle(); */
 }
