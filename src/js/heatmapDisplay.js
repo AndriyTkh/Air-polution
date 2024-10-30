@@ -1,9 +1,7 @@
-import {
-  removeDublicates,
-  ClearMap,
-  sortByDate,
-  AddHeatMap,
-} from "./filterFun.js";
+import { ClearMap, AddHeatMap } from "./filterFun.js";
+import removeDublicates from "./sorting/removeDublicates.js";
+import sortByDate from "./sorting/sortByDate.js";
+import averageFromDublicates from "./sorting/averageFromDublicates.js";
 import {
   initializeDate,
   formatDate,
@@ -13,26 +11,20 @@ import {
 } from "./dateFun.js";
 
 export function displayHeatmap(pollutionData, map) {
-  console.log("Displaying heatmap...");
-
-  ClearMap(map);
-  pollutionData = removeDublicates(pollutionData);
-  pollutionData = sortByDate(pollutionData);
-
-  console.log(pollutionData);
-
   let dateDT = initializeDate("2024-06-01", "00:00:00");
   let dateIndex;
   let timeIndex;
 
-  let dataList = pollutionData["2024-06-01"][16];
+  console.log("Displaying heatmap...");
+
   ClearMap(map);
 
-  dataList = dataList.map((row) => {
-    return [row.Latitude, row.Longitude, row.CO];
-  });
+  pollutionData = removeDublicates(pollutionData);
+  pollutionData = sortByDate(pollutionData);
+  pollutionData = averageFromDublicates(pollutionData);
 
-  AddHeatMap(dataList, map);
+  console.log("Display Data: ------------------------------");
+  console.log(pollutionData);
 
   /* ---------- Interval Logic ------------ */
   function processNextCycle() {
@@ -74,5 +66,5 @@ export function displayHeatmap(pollutionData, map) {
     }
   }
 
-  /* processNextCycle(); */
+  processNextCycle();
 }
