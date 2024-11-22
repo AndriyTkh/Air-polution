@@ -1,4 +1,4 @@
-import { ClearMap, AddHeatMap } from "./filterFun.js";
+import { ClearMap, AddHeatMap } from "./general/filterFun.js";
 import removeDublicates from "./sorting/removeDublicates.js";
 import sortByDate from "./sorting/sortByDate.js";
 import averageFromDublicates from "./sorting/averageFromDublicates.js";
@@ -8,7 +8,7 @@ import {
   changeDay,
   changeHour,
   formatTime,
-} from "./dateFun.js";
+} from "./general/dateFun.js";
 
 export function displayHeatmap(pollutionData, map) {
   let dateDT = initializeDate("2024-06-01", "00:00:00");
@@ -23,8 +23,14 @@ export function displayHeatmap(pollutionData, map) {
   pollutionData = sortByDate(pollutionData);
   pollutionData = averageFromDublicates(pollutionData);
 
-  console.log("Display Data: ------------------------------");
-  console.log(pollutionData);
+  /*   let dataList = pollutionData["2024-06-01"][23];
+  ClearMap(map);
+
+  dataList = dataList.map((row) => {
+    return [row.Latitude, row.Longitude, row.CO];
+  });
+
+  AddHeatMap(dataList, map); */
 
   /* ---------- Interval Logic ------------ */
   function processNextCycle() {
@@ -37,7 +43,7 @@ export function displayHeatmap(pollutionData, map) {
     )}`;
 
     /* ---------- Actual stuff --------- */
-    if (true) {
+    if (pollutionData[dateIndex][timeIndex] !== new Array(0)) {
       let dataList = pollutionData[dateIndex][timeIndex];
       ClearMap(map);
 
@@ -50,7 +56,7 @@ export function displayHeatmap(pollutionData, map) {
       dateDT = changeHour(dateDT, 1);
       setTimeout(processNextCycle, 500);
     } else {
-      console.log(`No data for ${dateIndex}, hour ${timeIndex}, skipping...`);
+      /* console.log(`No data for ${dateIndex}, hour ${timeIndex}, skipping...`); */
       dateDT = changeHour(dateDT, 1);
 
       // Check for the end of the day

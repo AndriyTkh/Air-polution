@@ -1,31 +1,45 @@
-export default function averageFromDublicates(datedArray, tolerance = 0.0001) {
-  const dates = Object.keys(datedArray);
+export default function averageFromDublicates(data) {
+  console.log("Start Data:", JSON.parse(JSON.stringify(data)));
 
-  console.log("Start Data: ------------------------------");
-  console.log(datedArray);
+  for (const date in data) {
+    for (let hour = 1; hour < 24; hour++) {
+      const prevHourData = data[date][hour - 1];
+      const currHourData = data[date][hour];
 
-  dates.forEach((date, dateIndex) => {
-    console.log(date);
+      const coordMap = new Map();
 
-    datedArray[date] = datedArray[date].map((hour, hourIndex) => {
-      if (hourIndex === 0) {
-        return [];
-      } else {
-        let prevHour = datedArray[date][hourIndex - 1];
+      const createCoordKey = (lat, lon) =>
+        `${lat.toFixed(7)},${lon.toFixed(6)}`;
 
-        if (prevHour.length !== 0) {
-          if (hour.length !== 0) {
-            /* console.log(1, prevHour.concat(hour)); */
+      // Add previous hour data to the map
+      prevHourData.forEach((point) => {
+        const coordKey = createCoordKey(point.Latitude, point.Longitude);
+        coordMap.set(coordKey, { ...point, count: 1 }); // Initialize with count 1
+      });
 
-            return prevHour.concat(hour);
-          } else {
-            /* console.log(2); */
+      // Add current hour data to the map (averaging if the coordinate already exists)
+      currHourData.forEach((point) => {
+        const coordKey = createCoordKey(point.Latitude, point.Longitude);
 
-            return prevHour;
-          }
+        if (coordMap.has(coordKey)) {
+          const existing = coordMap.get(coordKey);
+          existing.CO =
+            (existing.CO * existing.count + point.CO) / (existing.count + 1);
+          existing.count += 1; // Update the count for averaging
+          coordMap.set(coordKey, existing); // Update map with averaged data
+        } else {
+          coordMap.set(coordKey, { ...point, count: 1 });
         }
-      }
-    });
-  });
-  return datedArray;
+      });
+
+      // Replace the current hour data with the averaged data from coordMap
+      data[date][hour] = Array.from(coordMap.values()).map(
+        ({ count, ...rest }) => rest
+      );
+    }
+  }
+
+  console.log("End Data:", data);
+
+  return data;
 }

@@ -1,4 +1,4 @@
-import { handleFiles } from "./js/fileInputHandler.js";
+import { handleFiles } from "./js/general/fileInputHandler.js";
 import { displayHeatmap } from "./js/heatmapDisplay.js";
 
 /* ------------------------ Drawing map itself ------------------ */

@@ -1,4 +1,6 @@
 export default function removeDublicates(heatData) {
+  console.log(heatData);
+
   let cleanData = [];
   for (let index = 0; index < heatData.length - 1; index++) {
     const a = heatData[index];
