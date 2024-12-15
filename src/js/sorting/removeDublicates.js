@@ -6,7 +6,7 @@ export default function removeDublicates(heatData) {
     const a = heatData[index];
     const b = heatData[index + 1];
 
-    if (a.Latitude !== b.Latitude) {
+    if (a.Latitude !== b.Latitude && a.Longitude != b.Longitude) {
       cleanData.push(heatData[index]);
     }
   }

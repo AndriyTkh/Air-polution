@@ -9,7 +9,7 @@ export default function averageFromDublicates(data) {
       const coordMap = new Map();
 
       const createCoordKey = (lat, lon) =>
-        `${lat.toFixed(7)},${lon.toFixed(6)}`;
+        `${lat.toFixed(3)},${lon.toFixed(3)}`;
 
       // Add previous hour data to the map
       prevHourData.forEach((point) => {
