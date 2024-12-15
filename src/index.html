@@ -14,20 +14,34 @@
     <!-- Papa Parse for CSV parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
-    <style>
-      #map {
-        width: 100vh;
-        height: 100vw;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Select CSV files to load pollution data</h2>
-    <input type="file" id="fileInput" multiple accept=".csv" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-    <label for="timeSelector">Select Time:</label>
-    <input type="time" id="timeSelector" step="3600" value="12:00" />
-    <p>Selected Time: <span id="selectedTime">12:00</span></p>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div id="footer">
+      <section class="UI-box">
+        <div class="row-UI">
+          <label for="timeSelector">Select Time:</label>
+          <input type="time" id="timeSelector" step="3600" value="12:00" />
+
+          <p>Current Time: <span id="selectedTime">12:00</span></p>
+        </div>
+
+        <div class="row-UI">
+          <label for="fileInput" class="button-30">Завантажити дані</label>
+          <input type="file" id="fileInput" multiple accept=".csv" />
+
+          <h2 class="title">Aer-o-meter - інформація про ваше повітря</h2>
+        </div>
+      </section>
+    </div>
 
     <div id="map"></div>
 
