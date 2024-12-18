@@ -1,19 +1,16 @@
-export function ClearMap(map) {
-  map.eachLayer((layer) => {
-    if (layer.options.attribution !== "&copy; OpenStreetMap contributors") {
-      layer.remove();
-    }
-  });
+export function ClearMap(heat) {
+  heat.clear();
 }
 
-export function AddHeatMap(heatData, map) {
-  var heat = L.heatLayer(heatData, {
+export function AddHeatMap(heatData, heatmapLayer) {
+  /* var heat = L.heatLayer(heatData, {
     radius: 15,
-    blur: 5,
-    maxZoom: 1 / map._zoom,
+    minOpacity: 0,
+    blur: 0,
+    maxZoom: 15,
     max: 2,
     gradient: { 0.4: "lime", 0.65: "yellow", 1: "red" },
-  }).addTo(map);
+  }).addTo(map); */
 }
 
 export const asyncTimeout = (ms) => {

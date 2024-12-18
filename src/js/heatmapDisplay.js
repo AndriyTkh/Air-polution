@@ -13,15 +13,17 @@ export function convertToDataBase(pollutionData) {
   return pollutionData;
 }
 
-export function processNextCycle(pollutionData, timeIndex, map) {
+export function processNextCycle(pollutionData, timeIndex, heatmapLayer) {
   const dateIndex = "2024-06-01";
   let dataList = pollutionData[dateIndex][timeIndex];
 
-  ClearMap(map);
+  /* ClearMap(heat); */
 
-  dataList = dataList.map((row) => {
+  /* dataList = dataList.map((row) => {
     return [row.Latitude, row.Longitude, row.CO];
-  });
+  }); */
 
-  AddHeatMap(dataList, map);
+  if (dataList.length !== 0) {
+    heatmapLayer.setData({ data: dataList, max: 2 });
+  }
 }
