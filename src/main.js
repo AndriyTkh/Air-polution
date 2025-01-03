@@ -1,5 +1,4 @@
 import { handleFiles } from "./js/general/fileInputHandler.js";
-import { AddHeatMap } from "./js/general/filterFun.js";
 import { convertToDataBase, processNextCycle } from "./js/heatmapDisplay.js";
 
 /* ------------------------ Drawing map itself ------------------ */
@@ -16,11 +15,10 @@ var baseLayer = L.tileLayer(
 
 var cfg = {
   scaleRadius: true,
-  radius: 0.001,
+  radius: 0.00038,
   /* radius: 10, */
-  maxOpacity: 1,
-  minOpacity: 0,
-  blur: 0.8,
+  opacity: 1,
+  blur: 0,
   // which field name in your data represents the latitude - default "lat"
   latField: "Latitude",
   // which field name in your data represents the longitude - default "lng"
@@ -37,18 +35,53 @@ var map = new L.Map("map", {
   layers: [baseLayer, heatmapLayer],
 });
 
-/* heatmapLayer.setData(testData); */
+let pollutionData = {
+  "2024-06-01": [
+    [],
+    [
+      { Latitude: 50.455, Longitude: 30.525, CO: 1 },
+      { Latitude: 50.456, Longitude: 30.525, CO: 2 },
+    ],
+    [
+      { Latitude: 50.455, Longitude: 30.525, CO: 3 },
+      { Latitude: 50.456, Longitude: 30.525, CO: 2 },
+    ],
+    [{ Latitude: 50.461, Longitude: 30.525, CO: 2 }],
+    [
+      { Latitude: 50.455, Longitude: 30.526, CO: 3 },
+      { Latitude: 50.456, Longitude: 30.526, CO: 2 },
+    ],
+    [
+      { Latitude: 50.455, Longitude: 30.52659, CO: 3 },
+      { Latitude: 50.456, Longitude: 30.52656, CO: 2 },
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ],
+};
 
-// make accessible for debugging
-/* layer = heatmapLayer; */
+const createCoordKey = (lat, lon) => `${lat.toFixed(3)},${lon.toFixed(3)}`;
 
-var pollutionData;
-/* var map = L.map("map").setView([50.45, 30.523], 12); // Set the map view to Kyiv
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "&copy; OpenStreetMap contributors",
-}).addTo(map);
-
-var heat = simpleheat("map"); */
+pollutionData["2024-06-01"][5].forEach((element) => {
+  console.log(createCoordKey(element.Latitude, element.Longitude).split(","));
+  
+});
 
 console.log("Map setup... DONE");
 

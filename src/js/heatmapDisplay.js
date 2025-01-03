@@ -15,15 +15,12 @@ export function convertToDataBase(pollutionData) {
 
 export function processNextCycle(pollutionData, timeIndex, heatmapLayer) {
   const dateIndex = "2024-06-01";
+
+  /* pollutionData = averageFromDublicates(pollutionData); */
   let dataList = pollutionData[dateIndex][timeIndex];
 
-  /* ClearMap(heat); */
-
-  /* dataList = dataList.map((row) => {
-    return [row.Latitude, row.Longitude, row.CO];
-  }); */
 
   if (dataList.length !== 0) {
-    heatmapLayer.setData({ data: dataList, max: 2 });
+    heatmapLayer.setData({ data: dataList, min: 0, max: 2 });
   }
 }

@@ -8,13 +8,18 @@ export default function averageFromDublicates(data) {
 
       const coordMap = new Map();
 
-      const createCoordKey = (lat, lon) =>
-        `${lat.toFixed(3)},${lon.toFixed(3)}`;
+      const createCoordKey = (lat, lon) => {
+        return `${lat.toFixed(3)},${lon.toFixed(3)}`;
+      }
+      const fixedFloat = (num) => {
+        return Number.parseFloat(num.toFixed(3));
+      };
+        
 
       // Add previous hour data to the map
       prevHourData.forEach((point) => {
         const coordKey = createCoordKey(point.Latitude, point.Longitude);
-        coordMap.set(coordKey, { ...point, count: 1 }); // Initialize with count 1
+        coordMap.set(coordKey, { Latitude: fixedFloat(point.Latitude), Longitude: fixedFloat(point.Longitude), CO: point.CO, count: 1 }); // Initialize with count 1
       });
 
       // Add current hour data to the map (averaging if the coordinate already exists)
@@ -28,7 +33,12 @@ export default function averageFromDublicates(data) {
           existing.count += 1; // Update the count for averaging
           coordMap.set(coordKey, existing); // Update map with averaged data
         } else {
-          coordMap.set(coordKey, { ...point, count: 1 });
+          coordMap.set(coordKey, {
+            Latitude: fixedFloat(point.Latitude),
+            Longitude: fixedFloat(point.Longitude),
+            CO: point.CO,
+            count: 1,
+          });
         }
       });
 
