@@ -21,6 +21,6 @@ export function processNextCycle(pollutionData, timeIndex, heatmapLayer) {
 
 
   if (dataList.length !== 0) {
-    heatmapLayer.setData({ data: dataList, min: 0, max: 2 });
+    heatmapLayer.setData({ data: dataList, min: 0.6, max: 2 });
   }
 }

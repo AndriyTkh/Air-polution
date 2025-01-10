@@ -17,8 +17,9 @@ var cfg = {
   scaleRadius: true,
   radius: 0.00038,
   /* radius: 10, */
-  opacity: 1,
   blur: 0,
+  opacity: 1,
+  /* useGradientOpacity: true, */
   // which field name in your data represents the latitude - default "lat"
   latField: "Latitude",
   // which field name in your data represents the longitude - default "lng"

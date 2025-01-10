@@ -27,7 +27,7 @@
     },
     defaultMaxOpacity: 1,
     defaultMinOpacity: 0,
-    defaultBlur: 1,
+    defaultBlur: 0,
     defaultXField: "x",
     defaultYField: "y",
     defaultValueField: "value",
@@ -287,7 +287,7 @@
         gradient.addColorStop(1, "rgba(0,0,0,0)");
         tplCtx.fillStyle = gradient;
         tplCtx.fillRect(0, 0, 2 * radius, 2 * radius);
-      }
+      } 
 
       return tplCanvas;
     };
@@ -500,6 +500,8 @@
         var imgData = img.data;
         var len = imgData.length;
         var palette = this._palette;
+        console.log(palette);
+        
 
         for (var i = 3; i < len; i += 4) {
           var alpha = imgData[i];
