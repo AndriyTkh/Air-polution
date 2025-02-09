@@ -1,5 +1,5 @@
-import { handleFiles } from "./js/general/fileInputHandler.js";
-import { convertToDataBase, processNextCycle } from "./js/heatmapDisplay.js";
+import { processNextCycle } from "./js/heatmapDisplay.js";
+import { fetchDatabase } from "./js/API/fetchDatabase.js"
 
 /* ------------------------ Drawing map itself ------------------ */
 console.log("Map setup...");
@@ -77,12 +77,17 @@ let pollutionData = {
   ],
 };
 
+pollutionData = await fetchDatabase();
+
+
+/* demonstration
+
 const createCoordKey = (lat, lon) => `${lat.toFixed(3)},${lon.toFixed(3)}`;
 
 pollutionData["2024-06-01"][5].forEach((element) => {
   console.log(createCoordKey(element.Latitude, element.Longitude).split(","));
   
-});
+}); */
 
 console.log("Map setup... DONE");
 
@@ -94,11 +99,3 @@ timeSelector.addEventListener("input", function () {
 
   processNextCycle(pollutionData, timeSelector.value - 1, heatmapLayer);
 });
-
-document
-  .getElementById("fileInput")
-  .addEventListener("change", async (event) => {
-    let convertedData = await handleFiles(event);
-
-    pollutionData = convertToDataBase(convertedData, map);
-  });

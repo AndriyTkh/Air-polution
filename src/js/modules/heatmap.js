@@ -500,7 +500,6 @@
         var imgData = img.data;
         var len = imgData.length;
         var palette = this._palette;
-        console.log(palette);
         
 
         for (var i = 3; i < len; i += 4) {
