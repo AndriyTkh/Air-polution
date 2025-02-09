@@ -1,6 +1,6 @@
 export async function fetchDatabase() {
   try {
-    const response = await fetch("http://localhost:3000/database"); // Replace with your deployed server URL if hosted
+    const response = await fetch("https://adam-air-server.onrender.com/database"); // Replace with your deployed server URL if hosted
     const data = await response.json();
 
     if (response.ok) {
