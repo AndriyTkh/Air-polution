@@ -1,5 +1,5 @@
 import { processNextCycle } from "./js/heatmapDisplay.js";
-import { fetchDatabase } from "./js/API/fetchDatabase.js"
+import { fetchDatabase } from "./js/API/fetchDatabase.js";
 
 /* ------------------------ Drawing map itself ------------------ */
 console.log("Map setup...");
@@ -32,7 +32,7 @@ var heatmapLayer = new HeatmapOverlay(cfg);
 
 var map = new L.Map("map", {
   center: new L.LatLng(50.45, 30.523),
-  zoom: 12,
+  zoom: 14,
   layers: [baseLayer, heatmapLayer],
 });
 
@@ -79,7 +79,6 @@ let pollutionData = {
 
 pollutionData = await fetchDatabase();
 
-
 /* demonstration
 
 const createCoordKey = (lat, lon) => `${lat.toFixed(3)},${lon.toFixed(3)}`;
@@ -94,8 +93,12 @@ console.log("Map setup... DONE");
 const timeSelector = document.getElementById("timeSelector");
 const selectedTimeDisplay = document.getElementById("selectedTime");
 
-timeSelector.addEventListener("input", function () {
+DisplayFromTimerValue();
+timeSelector.addEventListener("input", DisplayFromTimerValue);
+
+function DisplayFromTimerValue() {
+  // Display function
   selectedTimeDisplay.textContent = `${timeSelector.value}:00`;
 
   processNextCycle(pollutionData, timeSelector.value - 1, heatmapLayer);
-});
+}
